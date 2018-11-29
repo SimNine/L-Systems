@@ -27,6 +27,7 @@ public class LSystemPanel extends JPanel {
 	
 	private int numIterations = 3;
 	private LSystemPreset currPreset = LSystemPreset.SIERPINSKI;
+	private long currSeed = 0;
 	
 	public LSystemPanel() {
 		super();
@@ -67,6 +68,9 @@ public class LSystemPanel extends JPanel {
 				} else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 					currPreset = currPreset.next();
 					LSystemMain.system.setPreset(currPreset);
+				} else if (e.getKeyCode() == KeyEvent.VK_R) {
+					currSeed = (long)(Math.random() * Long.MAX_VALUE);
+					LSystemMain.system.setSeed(currSeed);
 				}
 				repaint();
 			}
@@ -91,7 +95,10 @@ public class LSystemPanel extends JPanel {
 		double yCenter = (height / 2) - Ydisp;
 		double minLength = (10.0 / numIterations) + scale;
 		Turtle t = new Turtle(g, xCenter, yCenter, minLength);
+		LSystemMain.system.setSeed(currSeed);
 		String interpretation = LSystemMain.system.getNthIteration(numIterations);
+		g.drawString("String: " + interpretation, 10, 15*ln++);
+		g.drawString("Seed: " + currSeed, 10, 15*ln++);
 		HashMap<Character, LSystemOperator> ops = LSystemMain.system.interpretationRules;
 		
 		// act on the interpretation

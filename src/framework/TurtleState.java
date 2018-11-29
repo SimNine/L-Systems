@@ -17,7 +17,7 @@ public class TurtleState {
 	Color color = Color.BLACK;
 	
 	// width of the line (unused by this program)
-	int lineWidth = 1;
+	double lineWidth = 5;
 	
 	// default constructor
 	public TurtleState() {

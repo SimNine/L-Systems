@@ -1,20 +1,24 @@
 package system;
 
 import java.util.HashMap;
+import java.util.Random;
 
 import framework.Turtle;
 
 public class LSystem {
-	String axiom = "";
+	private String axiom = "";
 	public HashMap<Character, LSystemProducer> productionRules = new HashMap<Character, LSystemProducer>();
 	public HashMap<Character, LSystemOperator> interpretationRules = new HashMap<Character, LSystemOperator>();
+	private Random r = new Random();
 	
 	public LSystem() {
 		setPreset(LSystemPreset.SIERPINSKI);
+		r.setSeed(0);
 	}
 	
 	public LSystem(LSystemPreset preset) {
 		setPreset(preset);
+		r.setSeed(0);
 	}
 	
 	public String getNthIteration(int numIterations) {
@@ -41,6 +45,11 @@ public class LSystem {
 		
 		// return the final string
 		return currString;
+	}
+	
+	public void setSeed(long seed) {
+		r = new Random();
+		r.setSeed(seed);
 	}
 	
 	private void addSimpleProduction(char c, String prod) {
@@ -222,18 +231,142 @@ public class LSystem {
 			});
 			break;
 		case RIVER_LONG:
-			axiom = "S";
-			productionRules.put('S', new LSystemProducer() {
+			axiom = "SB";
+			
+			productionRules.put('S', new LSystemProducer() { // stream
 				public String produceString() {
-					if (Math.random() > 0.9) {
-						return "S"; //TODO
-					} else {
+					double rand = r.nextDouble();
+					if (rand > 0.9) { // turn
+						if (r.nextDouble() > 0.5)
+							return "RS";
+						else
+							return "LS";
+					} else { // continue straight
 						return "SS";
 					}
 				}
 			});
+			productionRules.put('B', new LSystemProducer() { // branch
+				public String produceString() {
+					double rand = r.nextDouble();
+					if (rand > 0.8) { // fork
+						if (r.nextDouble() > 0.5) { // parent goes right
+							return "S[PRSB]CLSB";
+						} else { // parent goes left
+							return "S[CRSB]PLSB";
+						}
+					} else { // continue straight
+						return "SB";
+					}
+				}
+			});
+			
+			interpretationRules.put('S', new LSystemOperator() { // stream
+				public void affectTurtle(Turtle t) {
+					t.drawAndAdvance();
+				}
+			});
+			interpretationRules.put('[', new LSystemOperator() { // push state
+				public void affectTurtle(Turtle t) {
+					t.pushState();
+				}
+			});
+			interpretationRules.put(']', new LSystemOperator() { // pop state
+				public void affectTurtle(Turtle t) {
+					t.popState();
+				}
+			});
+			interpretationRules.put('L', new LSystemOperator() { // turn left
+				public void affectTurtle(Turtle t) {
+					double rotateAngle = r.nextDouble() * 10.0;
+					t.rotate(-rotateAngle);
+				}
+			});
+			interpretationRules.put('R', new LSystemOperator() { // turn right
+				public void affectTurtle(Turtle t) {
+					double rotateAngle = r.nextDouble() * 10.0;
+					t.rotate(rotateAngle);
+				}
+			});
+			interpretationRules.put('C', new LSystemOperator() { // child branch
+				public void affectTurtle(Turtle t) {
+					t.scaleWidth(0.5);
+				}
+			});
+			interpretationRules.put('P', new LSystemOperator() { // parent branch
+				public void affectTurtle(Turtle t) {
+					t.scaleWidth(0.8);
+				}
+			});
 			break;
 		case RIVER_BRANCHING:
+			axiom = "SB";
+			
+			productionRules.put('S', new LSystemProducer() { // stream
+				public String produceString() {
+					double rand = r.nextDouble();
+					if (rand > 0.7) { // turn
+						if (r.nextDouble() > 0.5)
+							return "RS";
+						else
+							return "LS";
+					} else { // continue straight
+						return "SS";
+					}
+				}
+			});
+			productionRules.put('B', new LSystemProducer() { // branch
+				public String produceString() {
+					double rand = r.nextDouble();
+					if (rand > 0.2) { // fork
+						if (r.nextDouble() > 0.5) { // parent goes right
+							return "S[PRSB]CLSB";
+						} else { // parent goes left
+							return "S[CRSB]PLSB";
+						}
+					} else { // continue straight
+						return "SB";
+					}
+				}
+			});
+			
+			interpretationRules.put('S', new LSystemOperator() { // stream
+				public void affectTurtle(Turtle t) {
+					t.drawAndAdvance();
+				}
+			});
+			interpretationRules.put('[', new LSystemOperator() { // push state
+				public void affectTurtle(Turtle t) {
+					t.pushState();
+				}
+			});
+			interpretationRules.put(']', new LSystemOperator() { // pop state
+				public void affectTurtle(Turtle t) {
+					t.popState();
+				}
+			});
+			interpretationRules.put('L', new LSystemOperator() { // turn left
+				public void affectTurtle(Turtle t) {
+					double rotateAngle = r.nextDouble() * 10.0;
+					t.rotate(-rotateAngle);
+				}
+			});
+			interpretationRules.put('R', new LSystemOperator() { // turn right
+				public void affectTurtle(Turtle t) {
+					double rotateAngle = r.nextDouble() * 10.0;
+					t.rotate(rotateAngle);
+				}
+			});
+			interpretationRules.put('C', new LSystemOperator() { // child branch
+				public void affectTurtle(Turtle t) {
+					t.scaleWidth(0.5);
+				}
+			});
+			interpretationRules.put('P', new LSystemOperator() { // parent branch
+				public void affectTurtle(Turtle t) {
+					t.scaleWidth(0.8);
+				}
+			});
 			break;
 		case CUSTOM:
 			axiom = "C+C+C+C";

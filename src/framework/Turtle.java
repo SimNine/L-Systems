@@ -44,6 +44,10 @@ public class Turtle {
 	
 	// methods to alter the state of the turtle
 	
+	public void scaleWidth(double scaleFactor) {
+		currentState.lineWidth *= scaleFactor;
+	}
+	
 	public void reset() {
 		currentState = new TurtleState();
 		stateStack.clear();
