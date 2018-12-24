@@ -68,6 +68,7 @@ public class LSystemPanel extends JPanel {
 				} else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 					currPreset = currPreset.next();
 					LSystemMain.system.setPreset(currPreset);
+					LSystemMain.refreshRules();
 				} else if (e.getKeyCode() == KeyEvent.VK_R) {
 					currSeed = (long)(Math.random() * Long.MAX_VALUE);
 					LSystemMain.system.setSeed(currSeed);
@@ -108,15 +109,6 @@ public class LSystemPanel extends JPanel {
 			if (op != null)
 				op.affectTurtle(t);
 		}
-		
-		/*
-		g.setColor(Color.BLACK);
-		g.fillRect(0, 0, (int)width, (int)height);
-		g.setColor(Color.RED);
-		g.drawLine((int)width/2 - Xdisp, 0, (int)width/2 - Xdisp, (int)height);
-		g.setColor(Color.BLUE);
-		g.drawLine(0, (int)height/2 - Ydisp, (int)width, (int)height/2 - Ydisp);
-		*/
 	}
 	
 	public void setSize(int w, int h) {

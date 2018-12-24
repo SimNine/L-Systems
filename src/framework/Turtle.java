@@ -35,6 +35,10 @@ public class Turtle {
 		double xPosInit = currentState.xPos;
 		double yPosInit = currentState.yPos;
 		
+		//graphics.setColor(Color.GREEN);
+		//graphics.fillRect((int)xPosInit - 1, (int)yPosInit - 1,
+		//				  3, 3);
+		
 		advance();
 		
 		graphics.setColor(currentState.color);

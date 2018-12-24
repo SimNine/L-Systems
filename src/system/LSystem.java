@@ -6,7 +6,7 @@ import java.util.Random;
 import framework.Turtle;
 
 public class LSystem {
-	private String axiom = "";
+	public String axiom = "";
 	public HashMap<Character, LSystemProducer> productionRules = new HashMap<Character, LSystemProducer>();
 	public HashMap<Character, LSystemOperator> interpretationRules = new HashMap<Character, LSystemOperator>();
 	private Random r = new Random();
@@ -52,14 +52,6 @@ public class LSystem {
 		r.setSeed(seed);
 	}
 	
-	private void addSimpleProduction(char c, String prod) {
-		productionRules.put(c, new LSystemProducer() {
-			public String produceString() {
-				return prod;
-			}
-		});
-	}
-	
 	public void setPreset(LSystemPreset preset) {
 		// clear existing system
 		axiom = "";
@@ -69,169 +61,69 @@ public class LSystem {
 		switch (preset) {
 		case ALGAE:
 			axiom = "A";
-			addSimpleProduction('A', "AB");
-			addSimpleProduction('B', "A");
+			productionRules.put('A', new LSystemProducer("AB"));
+			productionRules.put('B', new LSystemProducer("A"));
 			// there are no production rules for this system
 			break;
 		case BINARY_TREE:
 			axiom = "0";
-			addSimpleProduction('0', "1[0]0");
-			addSimpleProduction('1', "11");
-			interpretationRules.put('0', new LSystemOperator() {
-				public void affectTurtle(Turtle t) {
-					t.drawAndAdvance();
-				}
-			});
-			interpretationRules.put('1', new LSystemOperator() {
-				public void affectTurtle(Turtle t) {
-					t.drawAndAdvance();
-				}
-			});
-			interpretationRules.put('[', new LSystemOperator() {
-				public void affectTurtle(Turtle t) {
-					t.pushState();
-					t.rotate(45);
-				}
-			});
-			interpretationRules.put(']', new LSystemOperator() {
-				public void affectTurtle(Turtle t) {
-					t.popState();
-					t.rotate(-45);
-				}
-			});
+			productionRules.put('0', new LSystemProducer("1[0]0"));
+			productionRules.put('1', new LSystemProducer("11"));
+			interpretationRules.put('0', new LSystemOperator(false, false, 0, true, true));
+			interpretationRules.put('1', new LSystemOperator(false, false, 0, true, true));
+			interpretationRules.put('[', new LSystemOperator(true, false, 45, false, false));
+			interpretationRules.put(']', new LSystemOperator(false, true, -45, false, false));
 			break;
 		case CANTOR_SET:
 			axiom = "A";
-			addSimpleProduction('A', "ABA");
-			addSimpleProduction('B', "BBB");
-			interpretationRules.put('A', new LSystemOperator() {
-				public void affectTurtle(Turtle t) {
-					t.drawAndAdvance();
-				}
-			});
-			interpretationRules.put('B', new LSystemOperator() {
-				public void affectTurtle(Turtle t) {
-					t.advance();
-				}
-			});
+			productionRules.put('A', new LSystemProducer("ABA"));
+			productionRules.put('B', new LSystemProducer("BBB"));
+			interpretationRules.put('A', new LSystemOperator(false, false, 0, true, true));
+			interpretationRules.put('B', new LSystemOperator(false, false, 0, true, false));
 			break;
 		case KOCH_CURVE:
 			axiom = "F";
-			addSimpleProduction('F', "F+F-F-F+F");
-			interpretationRules.put('F', new LSystemOperator() {
-				public void affectTurtle(Turtle t) {
-					t.drawAndAdvance();
-				}
-			});
-			interpretationRules.put('+', new LSystemOperator() {
-				public void affectTurtle(Turtle t) {
-					t.rotate(90);
-				}
-			});
-			interpretationRules.put('-', new LSystemOperator() {
-				public void affectTurtle(Turtle t) {
-					t.pushState();
-					t.rotate(-90);
-				}
-			});
+			productionRules.put('F', new LSystemProducer("F+F-F-F+F"));
+			interpretationRules.put('F', new LSystemOperator(false, false, 0, true, true));
+			interpretationRules.put('+', new LSystemOperator(false, false, 90, false, false));
+			interpretationRules.put('-', new LSystemOperator(false, false, -90, false, false));
 			break;
 		case KOCH_SNOWFLAKE:
 			axiom = "F+F+F+F";
-			addSimpleProduction('F', "F+F-F-FF+F+F-F");
-			interpretationRules.put('F', new LSystemOperator() {
-				public void affectTurtle(Turtle t) {
-					t.drawAndAdvance();
-				}
-			});
-			interpretationRules.put('+', new LSystemOperator() {
-				public void affectTurtle(Turtle t) {
-					t.rotate(90);
-				}
-			});
-			interpretationRules.put('-', new LSystemOperator() {
-				public void affectTurtle(Turtle t) {
-					t.pushState();
-					t.rotate(-90);
-				}
-			});
+			productionRules.put('F', new LSystemProducer("F+F-F-FF+F+F-F"));
+			interpretationRules.put('F', new LSystemOperator(false, false, 0, true, true));
+			interpretationRules.put('+', new LSystemOperator(false, false, 90, false, false));
+			interpretationRules.put('-', new LSystemOperator(false, false, -90, false, false));
 			break;
 		case SIERPINSKI:
 			axiom = "F-G-G";
-			addSimpleProduction('F', "F-G+F+G-F");
-			addSimpleProduction('G', "GG");
-			interpretationRules.put('F', new LSystemOperator() {
-				public void affectTurtle(Turtle t) {
-					t.drawAndAdvance();
-				}
-			});
-			interpretationRules.put('G', new LSystemOperator() {
-				public void affectTurtle(Turtle t) {
-					t.drawAndAdvance();
-				}
-			});
-			interpretationRules.put('+', new LSystemOperator() {
-				public void affectTurtle(Turtle t) {
-					t.rotate(120);
-				}
-			});
-			interpretationRules.put('-', new LSystemOperator() {
-				public void affectTurtle(Turtle t) {
-					t.rotate(-120);
-				}
-			});
+			productionRules.put('F', new LSystemProducer("F-G+F+G-F"));
+			productionRules.put('G', new LSystemProducer("GG"));
+			interpretationRules.put('F', new LSystemOperator(false, false, 0, true, true));
+			interpretationRules.put('G', new LSystemOperator(false, false, 0, true, true));
+			interpretationRules.put('+', new LSystemOperator(false, false, 120, false, false));
+			interpretationRules.put('-', new LSystemOperator(false, false, -120, false, false));
 			break;
 		case DRAGON_CURVE:
 			axiom = "FX";
-			addSimpleProduction('X', "X+YF+");
-			addSimpleProduction('Y', "-FX-Y");
-			interpretationRules.put('F', new LSystemOperator() {
-				public void affectTurtle(Turtle t) {
-					t.drawAndAdvance();
-				}
-			});
-			interpretationRules.put('-', new LSystemOperator() {
-				public void affectTurtle(Turtle t) {
-					t.rotate(90);
-				}
-			});
-			interpretationRules.put('+', new LSystemOperator() {
-				public void affectTurtle(Turtle t) {
-					t.rotate(-90);
-				}
-			});
+			productionRules.put('X', new LSystemProducer("X+YF+"));
+			productionRules.put('Y', new LSystemProducer("-FX-Y"));
+			interpretationRules.put('F', new LSystemOperator(false, false, 0, true, true));
+			interpretationRules.put('-', new LSystemOperator(false, false, 90, false, false));
+			interpretationRules.put('+', new LSystemOperator(false, false, -90, false, false));
 			break;
 		case FRACTAL_PLANT:
 			axiom = "X";
-			addSimpleProduction('X', "F+[[X]-X]-F[-FX]+X");
-			addSimpleProduction('F', "FF");
-			interpretationRules.put('F', new LSystemOperator() {
-				public void affectTurtle(Turtle t) {
-					t.drawAndAdvance();
-				}
-			});
-			interpretationRules.put('-', new LSystemOperator() {
-				public void affectTurtle(Turtle t) {
-					t.rotate(25);
-				}
-			});
-			interpretationRules.put('+', new LSystemOperator() {
-				public void affectTurtle(Turtle t) {
-					t.rotate(-25);
-				}
-			});
-			interpretationRules.put('[', new LSystemOperator() {
-				public void affectTurtle(Turtle t) {
-					t.pushState();
-				}
-			});
-			interpretationRules.put(']', new LSystemOperator() {
-				public void affectTurtle(Turtle t) {
-					t.popState();
-				}
-			});
+			productionRules.put('X', new LSystemProducer("F+[[X]-X]-F[-FX]+X"));
+			productionRules.put('F', new LSystemProducer("FF"));
+			interpretationRules.put('F', new LSystemOperator(false, false, 0, true, true));
+			interpretationRules.put('-', new LSystemOperator(false, false, 25, false, false));
+			interpretationRules.put('+', new LSystemOperator(false, false, -25, false, false));
+			interpretationRules.put('[', new LSystemOperator(true, false, 0, false, false));
+			interpretationRules.put(']', new LSystemOperator(false, true, 0, false, false));
 			break;
 		case RIVER_LONG:
-			axiom = "SB";
+			axiom = "[SB]TSB";
 			
 			productionRules.put('S', new LSystemProducer() { // stream
 				public String produceString() {
@@ -260,22 +152,10 @@ public class LSystem {
 					}
 				}
 			});
-			
-			interpretationRules.put('S', new LSystemOperator() { // stream
-				public void affectTurtle(Turtle t) {
-					t.drawAndAdvance();
-				}
-			});
-			interpretationRules.put('[', new LSystemOperator() { // push state
-				public void affectTurtle(Turtle t) {
-					t.pushState();
-				}
-			});
-			interpretationRules.put(']', new LSystemOperator() { // pop state
-				public void affectTurtle(Turtle t) {
-					t.popState();
-				}
-			});
+
+			interpretationRules.put('S', new LSystemOperator(false, false, 0, true, true)); // stream
+			interpretationRules.put('[', new LSystemOperator(true, false, 0, false, false)); // push state
+			interpretationRules.put('0', new LSystemOperator(false, true, 0, false, false)); // pop state
 			interpretationRules.put('L', new LSystemOperator() { // turn left
 				public void affectTurtle(Turtle t) {
 					double rotateAngle = r.nextDouble() * 10.0;
@@ -298,14 +178,14 @@ public class LSystem {
 					t.scaleWidth(0.8);
 				}
 			});
+			interpretationRules.put('T', new LSystemOperator(false, false, 180, false, false));
 			break;
 		case RIVER_BRANCHING:
-			axiom = "SB";
+			axiom = "[SB]TSB";
 			
 			productionRules.put('S', new LSystemProducer() { // stream
 				public String produceString() {
-					double rand = r.nextDouble();
-					if (rand > 0.7) { // turn
+					if (r.nextDouble() > 0.7) { // turn
 						if (r.nextDouble() > 0.5)
 							return "RS";
 						else
@@ -317,8 +197,7 @@ public class LSystem {
 			});
 			productionRules.put('B', new LSystemProducer() { // branch
 				public String produceString() {
-					double rand = r.nextDouble();
-					if (rand > 0.2) { // fork
+					if (r.nextDouble() > 0.2) { // fork
 						if (r.nextDouble() > 0.5) { // parent goes right
 							return "S[PRSB]CLSB";
 						} else { // parent goes left
@@ -367,10 +246,15 @@ public class LSystem {
 					t.scaleWidth(0.8);
 				}
 			});
+			interpretationRules.put('T', new LSystemOperator() { // turn around
+				public void affectTurtle(Turtle t) {
+					t.rotate(180);
+				}
+			});
 			break;
 		case CUSTOM:
 			axiom = "C+C+C+C";
-			addSimpleProduction('C', "[AC+C+B+C]");
+			productionRules.put('X', new LSystemProducer("[AC+C+B+C]"));
 			interpretationRules.put('C', new LSystemOperator() {
 				public void affectTurtle(Turtle t) {
 					t.drawAndAdvance();

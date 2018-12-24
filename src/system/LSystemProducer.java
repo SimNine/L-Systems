@@ -1,7 +1,19 @@
 package system;
 
-public interface LSystemProducer {
+public class LSystemProducer {
 
-	public abstract String produceString();
+	public String output;
+	
+	public LSystemProducer() {
+		output = null;
+	}
+	
+	public LSystemProducer(String out) {
+		output = out;
+	}
+	
+	public String produceString() {
+		return output;
+	}
 	
 }
