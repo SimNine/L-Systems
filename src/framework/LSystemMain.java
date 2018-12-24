@@ -144,6 +144,7 @@ public class LSystemMain implements Runnable {
 	    JButton clearRulesButton = new JButton("Clear rules");
 	    clearRulesButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				axiomField.setText("");
 				productionRuleList.removeAll();
 			    productionRuleList.setPreferredSize(new Dimension(100, 0));
 				productionRuleList.validate();
