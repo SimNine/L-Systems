@@ -1,4 +1,4 @@
-package system;
+package xyz.urffer.lsystems.system;
 
 public class LSystemProducer {
 

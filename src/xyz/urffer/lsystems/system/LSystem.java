@@ -1,9 +1,9 @@
-package system;
+package xyz.urffer.lsystems.system;
 
 import java.util.HashMap;
 import java.util.Random;
 
-import framework.Turtle;
+import xyz.urffer.lsystems.framework.Turtle;
 
 public class LSystem {
 	public String axiom = "";

@@ -1,4 +1,4 @@
-package framework;
+package xyz.urffer.lsystems.framework;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -18,10 +18,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-import system.LSystem;
-import system.LSystemOperator;
-import system.LSystemPreset;
-import system.LSystemProducer;
+import xyz.urffer.lsystems.system.LSystem;
+import xyz.urffer.lsystems.system.LSystemOperator;
+import xyz.urffer.lsystems.system.LSystemPreset;
+import xyz.urffer.lsystems.system.LSystemProducer;
 
 public class LSystemMain implements Runnable {
     private static String appName = "L-System";
@@ -37,12 +37,6 @@ public class LSystemMain implements Runnable {
     public static JTextField axiomField = null;
     
 	public void run() {
-        System.out.println();
-	    System.out.println("---------------------");
-	    System.out.println(appName);
-        System.out.println("---------------------");
-        System.out.println();
-	    
         // create the display frame and panel
 		final JFrame displayFrame = new JFrame(appName + " display");
        	displayPanel = new LSystemPanel();

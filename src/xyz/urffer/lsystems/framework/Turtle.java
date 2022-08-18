@@ -1,4 +1,4 @@
-package framework;
+package xyz.urffer.lsystems.framework;
 
 import java.awt.Color;
 import java.awt.Graphics;

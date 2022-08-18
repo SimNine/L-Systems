@@ -1,4 +1,4 @@
-package framework;
+package xyz.urffer.lsystems.framework;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -11,8 +11,8 @@ import java.util.HashMap;
 
 import javax.swing.JPanel;
 
-import system.LSystemOperator;
-import system.LSystemPreset;
+import xyz.urffer.lsystems.system.LSystemOperator;
+import xyz.urffer.lsystems.system.LSystemPreset;
 
 @SuppressWarnings("serial")
 public class LSystemPanel extends JPanel {

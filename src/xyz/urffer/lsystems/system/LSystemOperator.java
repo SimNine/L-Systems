@@ -1,6 +1,6 @@
-package system;
+package xyz.urffer.lsystems.system;
 
-import framework.Turtle;
+import xyz.urffer.lsystems.framework.Turtle;
 
 public class LSystemOperator {
 	
