@@ -1,7 +1,7 @@
 # L-Systems
 A simple Java tool for visualizing and creating context-free Lindenmayer systems. Written waaaay back in junior year of college.
 
-![](docs/scrn.PNG)
+![](docs/scrn.png)
 
 ## Usage
 - Install [Java](https://www.java.com/en/download/)
